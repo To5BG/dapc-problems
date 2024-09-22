@@ -1,0 +1,53 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+->[Problem:] Given $n \leq 500$ trains that arrive at the
+          north/south end of a one-lane tunnel, determine the minimal
+          sum of waiting times over all trains.
+        \item<+->[Insight:] A train enters the tunnel either:
+          \begin{itemize}
+            \item \emph{On time}: as soon as it arrives, or
+            \item \emph{Late}: directly after an opposite train exits the tunnel.
+          \end{itemize}
+        \item<+-> [Insight:] After a train exits the tunnel, there are four possibilities
+          for the next train:
+          \begin{enumerate}
+            \item Same direction and departs on time.
+            \item Opposite direction and enters at a later time (always on time).
+            \item Same direction and departs late, at the same time as current train.
+            \item Opposite direction and enters directly after (on time or late).
+          \end{enumerate}
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+-> [Solution:] \emph{Forward} DP:
+          $DP[d][i][j]$ is the minimal total waiting time for the first $i$
+          trains going north and $j$ trains going south where the last train is
+          in direction $d$ and leaves on time.
+        \item<+-> [Notation:] $N_i$, $S_j$: arrival time of $i$th train north /
+          $j$th train south.
+          $D$: duration in tunnel.
+        \item<+-> [Expand:] Given state $(N, i, j, T, W)$: $i$ trains going north done; $j$
+          trains going south done; last train went north and entered at time $T$; total
+          waiting time $W$. Next possible states:
+          \begin{enumerate}
+            \item[E1.] $DP[N][i+1][j] \leq W$, when the next northbound train is on time ($N_{i+1} \geq T$);
+            \item[E2.] $DP[S][i][j+1] \leq W$, when the next southbound train is on time ($S_{j+1} \geq T + D$).
+            \item[E3.] $(N, i{+}1, j, T, W+(T-N_{i+1}))$, when next northbound train is late ($N_{i+1} {<} T$);
+            \item[E4.] $(S, i, j{+}1, T{+}D, W + (N_i + D -S_{j+1}))$, when train $j{+}1$ leaves late ($S_{j+1} {<} T{+}D$).
+          \end{enumerate}
+        \item<+-> [Greedy:] When a train is late, send all other waiting trains
+          as well. (Prefer E3 over E4.)
+        \item<+-> [Recursion:] For each DP state, consider all $\leq n$ states
+          reached from it by alternating late trains from both sides
+          (E3 and E4) and update $DP$ via E1 and E2.
+
+          (See jury submissions for details.)
+      \item<+-> [Run time:] $\mathcal O(n^3)$: $\mathcal O(n^2)$ DP states with $\mathcal O(n)$ recursion in each.
+      \item<+-> [Challenge:] $\mathcal O(n^2)$ is also possible!
+    \end{description}
+    \solvestats
+\end{frame}

@@ -1,0 +1,11 @@
+2
+recipea 4
+stepa 5 0
+stepb 5 1 stepa
+stepc 2 0
+stepd 2 1 stepc
+recipeb 4
+stepa 1 0
+stepb 2 1 stepa
+stepc 2 1 stepa
+stepd 1 2 stepb stepc

@@ -1,0 +1,33 @@
+\documentclass[margin=5pt,varwidth=30ex]{standalone}
+\usepackage{minted}
+\AfterEndEnvironment{minted}{\vspace{-2em}}
+\begin{document}
+\begin{minted}{c++}
+#include <algorithm>
+\end{minted}
+\begin{minted}{java}
+import java.util.Arrays;
+
+\end{minted}
+\begin{minted}{javascript}
+const sort = (names) =>
+\end{minted}
+\begin{minted}{python}
+  sorted(
+\end{minted}
+\begin{minted}[firstline=2]{java}
+class A { void a() {
+    Arrays.sort(
+\end{minted}
+\begin{minted}[firstline=2]{python}
+def sort(names):
+      sort(names.begin(),
+           names.end())
+\end{minted}
+\begin{minted}{kotlin}
+    ).sort()
+\end{minted}
+\begin{minted}{java}
+  );
+\end{minted}
+\end{document}

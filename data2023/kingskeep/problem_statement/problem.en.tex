@@ -1,0 +1,39 @@
+\problemname{King's Keep}
+
+\illustration{0.28}{keep.jpg}{
+    King Carl's keep of choice: created with contours of a capital `K'. \\
+    CC BY-SA 2.0 by David Dixon on \href{https://www.geograph.org.uk/photo/6589097}{geograph.co.uk}, modified
+}
+
+% optionally define variables/limits for this problem
+\newcommand{\maxn}{1000}
+\newcommand{\maxx}{1000}
+
+King Carl's kingdom contains $k$ keeps (commonly called castles).
+
+Coordinates of keeps are known, and King Carl considers himself convinced that
+it could be convenient to choose a central keep as King Carl's residence.
+
+Critically, King Carl considers that the average cost to carry commands from
+King Carl's residence to King Carl's other keeps should be small.
+
+Compute the minimal average Euclidean distance\footnotemark{} from his residence keep to the
+other keeps if King Carl chooses his residence optimally.
+\footnotetext{
+    The Euclidean distance between two points is the length of a straight line segment between these points.
+}
+
+\begin{Input}
+    The input consists of:
+    \begin{itemize}
+        \item One line with an integer $k$ ($2\leq k\leq \maxn$), the number of keeps.
+        \item $k$ lines, each with two integers $x$ and $y$ ($|x|, |y| \leq \maxx$), the coordinates of the keeps.
+    \end{itemize}
+    It is guaranteed that all keeps are at distinct locations.
+\end{Input}
+
+\begin{Output}
+    Output the minimal possible average distance from the keep that is chosen as the king's residence to all other keeps.
+
+    Your answer should have an absolute or relative error of at most $10^{-6}$.
+\end{Output}

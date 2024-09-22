@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+g++ -g -O2 -std=gnu++20 -Wall -Wfatal-errors output_validator.cpp -o output_validator

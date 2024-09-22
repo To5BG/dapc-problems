@@ -1,0 +1,28 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+->[Problem:] Design a \emph{Tetris} grid that perfectly fits the input block.
+        \item<+->[Observation:] The grid can only become perfect if the block has a side with only `\texttt{\#}'.
+        \begin{itemize}
+            \small
+            \item (such a side should be at the top)
+        \end{itemize}
+        \item<+->[Solution:] Find a side that has only `\texttt{\#}'.
+
+        \onslide<+->{
+            Rotate the block to have this side point upwards.
+        }
+
+        \onslide<+->{
+            Verify that the block has no holes.
+            \begin{itemize}
+                \item Each column should have only `\texttt{\#}' at the top, followed by `\texttt{.}' at the bottom.
+            \end{itemize}
+        }
+
+        \onslide<+->{
+            Invert the block (i.e.\ swap `\texttt{\#}' and `\texttt{.}') to get a grid that it would fit in.
+        }
+    \end{description}
+    \solvestats
+\end{frame}

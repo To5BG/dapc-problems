@@ -1,0 +1,31 @@
+\problemname{Fastestest Function}
+
+\illustration{0.4}{flamegraph.png}{A flamegraph.}
+% Source: Own screenshot.
+
+You are working as a software developer for the Bug Acquisition Programming
+Company. They developed a specific piece of software called Program C that they
+sell to their clients. For the past weeks, you have been working on optimising a
+specific function \texttt{foo} in the main code path in Program C. You have made
+it a lot faster and would like to show off to your boss about it.
+
+Your IDE has a nice tool that allows you to profile your code and tell you what
+percentage of the total running time \texttt{foo} takes. You can run this on the
+version before your change and after your change. However, you think it looks a
+lot cooler if you can just tell your boss how much faster you have made
+\texttt{foo} itself.
+
+\begin{Input}
+    The input consists of:
+    \begin{itemize}
+        \item One line with two integers $x$ and $y$ ($0 < x, y < 100$),
+        where $x$ is the percentage of the total running time that \texttt{foo} took before optimising
+        and $y$ the percentage of the total running time it took after optimising.
+    \end{itemize}
+\end{Input}
+
+\begin{Output}
+    Output the factor of how much faster \texttt{foo} got after your optimization.
+
+    Your answer should have an absolute or relative error of at most $10^{-6}$.
+\end{Output}

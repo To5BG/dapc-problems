@@ -1,0 +1,15 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{itemize}
+        \item<+-> \textbf{Problem:} Given a list of $n$ aliases, calculate the total length of the shortest unique prefixes of these aliases.
+	\item<+-> \textbf{Naive solution:} For each alias, compare it to every other alias to find the shortest unique prefix of that alias.
+	\begin{itemize}
+		\item Complexity: $\mathcal O(n^2)$ (too slow)
+	\end{itemize}
+	\item<+-> \textbf{Solution:} First sort the list of aliases lexicographically. Then for each alias you only need to compare against the previous and the next alias in the sorted list to compute its shortest unique prefix.
+	\begin{itemize}
+		\item Complexity: $\mathcal O(n \log n)$
+	\end{itemize}
+    \end{itemize}
+    \solvestats
+\end{frame}

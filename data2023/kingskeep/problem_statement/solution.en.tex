@@ -1,0 +1,17 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+->[Problem:] Compute the minimal average distance from the most optimal residence keep to the other keeps.
+        \item<+->[Observation:] There are $k \leq 1000$ keeps, so $\mathcal O(k^2)$ is fine.
+        \item<+->[Solution:] For every keep, calculate the average distance to all other keeps, and take the minimum:
+            \[ \min_{1 \leq i \leq k}\left(
+                \frac{\sum_{j \neq i} d(i, j)}{k - 1}
+            \right) \]
+            \vspace{0.5em}
+            \begin{center}
+                $d(i, j)$ is Euclidean distance between keeps $i$ and $j$:
+            \end{center}
+            \[ d(i, j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2} \]
+    \end{description}
+    \solvestats
+\end{frame}

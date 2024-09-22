@@ -1,0 +1,56 @@
+\problemname{Monorail}
+
+\illustration{0.3}{train.jpg}{
+    A train about to enter the tunnel.
+    From \href{https://www.pxfuel.com/en/free-photo-otaqw}{pxfuel.com}
+}
+
+% optionally define variables/limits for this problem
+\newcommand{\maxn}{500}
+\newcommand{\maxd}{10^9}
+\newcommand{\maxt}{10^9}
+
+% https://en.wikipedia.org/wiki/Gotthard_Base_Tunnel#Incidents
+You were just about to go on a nice long holiday to the south, but as always, the trains are delayed.
+This time, a cargo train derailed in the Gotthard Base Tunnel through the Alps, completely taking
+one of the two tubes out of service for several months. Luckily, after some
+initial repairs, the other tube is in service again for cargo traffic.
+
+Since it is now only a one-track connection, multiple trains in the same direction
+can closely follow each other, but trains in opposite directions can not pass
+each other. This also means that trains going north can only enter once all
+trains going south have exited the tunnel, and vice versa.
+
+Today, there are \(n\) cargo trains that want to drive through the tunnel.
+Each train arrives at one of the ends at a given time,
+and takes exactly \(d\) minutes to drive through the tunnel at a constant speed.
+
+Even though this is not your responsibility, you decide to make a schedule for
+today's trains.
+You will decide for each train how long is has to wait at its entrance portal
+before it can enter the tunnel. Your goal is to minimize the sum of waiting times
+at the entrance portals over all trains.
+
+For simplicity, you assume that trains are short compared to the length of the
+tunnel and can be approximated by points travelling over a line segment.
+
+
+\begin{Input}
+    The input consists of:
+    \begin{itemize}
+        \item One line with an integer \(n\) and \(d\) (\(1\leq n\leq \maxn\), \(1 \leq d \leq \maxd\)),
+            the number of cargo trains and the duration that each train needs to drive through the tunnel, in minutes.
+        \item \(n\) lines, each containing a character \(s\) and an integer \(t\)
+    (\(s \in \{\text{`\texttt{N}'},\text{`\texttt{S}'}\}\), \(0 \leq
+    t \leq \maxt\)), indicating whether this train starts at the north or south
+    portal, and the number of minutes after the start time at which this
+    train arrives.
+    \end{itemize}
+    It is guaranteed that trains are sorted by arrival time.
+    For trains with equal arrival time,
+    the trains coming from the north are listed before the trains coming from the south.
+\end{Input}
+
+\begin{Output}
+    Output the minimal sum of waiting times at the tunnel entrance portals over all trains, in minutes.
+\end{Output}

@@ -1,0 +1,21 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        % TODO: Remove this comment when done. This slide still needs to be expanded.
+        \item<+->[Problem:] Given some permutations $\sigma_1, \ldots, \sigma_k$ of $\{1, \ldots, n\}$, determine a permutation such that the total cost is minimized.
+        \item<+->[Solution:] Sort on average position. (Or equivalently: sum of positions)
+        \item<.->[Proof:]
+            \begin{itemize}
+            \item<+-> Denote the average position of result $r$ by $\mu(r) = \frac{1}{k} \sum_{s=1}^k \sigma_s(r)$.
+            \item<+-> A permutation $\tau$ has cost:
+                \begin{align*}
+                \sum_{r=1}^n \sum_{s=1}^k (\tau(r) - \sigma_s(r))^2 &= \sum_{r=1}^n \sum_{s=1}^k (\tau(r)^2 - 2\tau(r)\sigma_s(r) + \sigma_s(r)^2)\\
+                &= \sum_{r=1}^n (k\tau(r)^2 - 2k\tau(r)\mu(r) + \text{constants})\\
+                &= k\sum_{r=1}^n (\tau(r) - \mu(r))^2 + \text{other constant}
+                \end{align*}
+            \item<+-> So $\sum_{r=1}^n (\tau(r) - \mu(r))^2$ needs to be minimized.
+            \end{itemize}
+        \item<+->[Run time:] $\mathcal{O}(nk + n\log n)$
+    \end{description}
+    \solvestats
+\end{frame}

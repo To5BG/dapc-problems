@@ -1,0 +1,15 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+->[Problem:] Calculate the longest time that goes by without seeing a new message on the terminal.
+        \item<+->[Solution:] Simulate the processing of the migration jobs and find the largest gap.
+        \begin{itemize}
+            \item For each of the $n$ jobs, find the first available CPU core, \\ and update this core's end time.
+            \item Make sure to correctly handle the start and end of the simulation.
+        \end{itemize}
+        \item<+->[Pitfall:] Finding the first available CPU core in a list ($\mathcal O(k)$ time) is too slow, \\
+            use a priority queue instead ($\mathcal O(\log k)$ time).
+        \item<+->[Run time:] $\mathcal O(n \log k)$
+    \end{description}
+    \solvestats
+\end{frame}

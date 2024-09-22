@@ -1,0 +1,18 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{itemize}
+        \item<+-> \textbf{Problem:} Given a knitting pattern and amount of wool it costs for letting the wool strand unused, using the
+            wool in a stitch, and for starting or ending the use of wool. Compute the minimal amount of wool required
+            for every colour of wool.
+        \item<+-> \textbf{Observation:} Between two times a colour of wool is used,
+            you either leave the strand through the back unused for the entire gap,
+            or you immediately end the use at the beginning of the gap and start using it at the end.
+        \item<+-> \textbf{Solution:} For every colour, iterate through the knitting pattern and remember the index of the
+            last time the colour occurred. If you encounter the colour again, the marginal cost is the minimum
+            between leaving the strand unused the whole time since the last time, and the sum of the costs for ending
+            and starting. Runs in $\mathcal O(|w| \cdot n)$.
+        \item<+-> \textbf{Remark:} Can be done in $\mathcal O(n)$ by doing some bookkeeping and storing for every colour the
+            last time it occurred.
+    \end{itemize}
+    \solvestats
+\end{frame}

@@ -1,0 +1,17 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{itemize}
+        \item<+-> \textbf{Problem:} How many iterations of Bubble-bubble Sort should you run?
+        \item<+-> \textbf{Solution:} It is fast enough to simulate the algorithm and count the number of iterations.
+                    Runtime: $\mathcal O(n^2)$.
+        \item<+-> \textbf{Optimized:}
+        \begin{itemize}
+            \item Observe that high numbers move to the right immediately,
+                    and low numbers move $k-1$ to the left per iteration.
+            \item Solution: find the maximum distance (to the left) of any value to their sorted position ($D$),
+                    and output $\displaystyle\left\lceil \frac{D}{k-1} \right\rceil$.
+            \item Runtime: $\mathcal O(n \log n)$ for sorting, $\mathcal O(n)$ for finding the maximum distance.
+        \end{itemize}
+    \end{itemize}
+    \solvestats
+\end{frame}

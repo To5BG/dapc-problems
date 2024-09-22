@@ -1,0 +1,29 @@
+\documentclass[margin=5pt]{standalone}
+\usepackage{array}
+\usepackage{amsmath,amssymb}
+\usepackage{tikz}
+
+\begin{document}
+\definecolor{metal}{HTML}{B0B0B0}
+
+\newcommand{\drawcircle}[3]{
+	\draw[dashed] (0,0) circle (#1);
+	\foreach \i in {1,...,#2} {
+		\fill ({(\i-1)*(360/#2)+#3}:#1) circle (3pt);
+	}
+}
+\begin{tikzpicture}
+	\fill[metal] (0,0) circle (8);
+	\drawcircle{2}{12}{11.23}
+	\drawcircle{3}{18}{4.1}
+	\drawcircle{5}{31}{14.3}
+	\drawcircle{7}{43}{23.78}
+\end{tikzpicture}%
+\hspace{180pt}%
+\begin{tikzpicture}
+	\fill[metal] (0,0) circle (8);
+	\drawcircle{2}{6}{20}{360/6}
+	\drawcircle{5}{15}{13}{360/15}
+\end{tikzpicture}
+
+\end{document}

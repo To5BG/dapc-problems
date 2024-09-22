@@ -1,0 +1,18 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{itemize}
+        \item<+-> \textbf{Problem:} Order the recipes by accessibility
+                    (lowest $\frac{\text{beginner time}}{\text{expert time}}$ first).
+        \item<+-> \textbf{Solution:} For every recipe, calculate:
+        \begin{itemize}
+            \item beginner time by summing the durations of all steps.
+            \item expert time by calculating the maximal finish time of a step.
+        \end{itemize}
+        \item<+-> The finish time of a step is the step's duration plus the maximal finish time of its dependencies.
+        \begin{itemize}
+            \item Calculate using dynamic programming by running over all steps in order.
+        \end{itemize}
+        \item<+-> Finally, order the recipes by the given ratio.
+    \end{itemize}
+    \solvestats
+\end{frame}

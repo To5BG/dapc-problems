@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# called as:
+# ./run in ans feedback_dir [additional arguments] < out [> interactive_input]
+input=$1
+answer=$2
+feedbackdir=$3
+
+# relevant files in feedback_dir:
+# teammessage.txt (not in use for ICPC contests)
+judgemessage=${feedbackdir}judgemessage.txt
+scriptdir=${0%/*}
+
+# return value:
+AC=42
+WA=43
+
+# copy stdin to tempfile, so that we can reuse it
+output=$(mktemp -p /tmp "BAPC-test-XXXXXX.out")
+cat > $output
+
+for validator in "${scriptdir}/output_validator" "pypy3 ${scriptdir}/validate_rotation.py" ; do
+	# Now check the validity of the output
+	${validator} $input $answer $feedbackdir < $output
+	retcode=$?
+	if [ "$retcode" = "43" ] ; then
+		echo "Validator $validator rejected the team output!" >> $judgemessage
+		rm $output
+		exit $WA
+	fi
+
+	if [ "$retcode" != "42" ] ; then
+		echo "Validator $validator gave unexpected result $retcode!" >> $judgemessage
+		echo "PLEASE INVESTIGATE THIS" >> $judgemessage
+		rm $output
+		exit 1
+	fi
+done
+
+rm $output
+exit $AC

@@ -1,0 +1,15 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{itemize}
+        \item<+-> \textbf{Problem:} Given $n$ algorithms that only work when
+            their input $\vec x$ is small enough ($\vec x \leq \vec H$), can you verify the correctness of all
+            of them on sufficiently large inputs ($\vec x \geq \vec L$)?
+        \item<+-> Since you know the answer in $\vec 0$, you can verify the correctness of all algorithms with
+            $\vec L = \vec 0$.
+        \item<+-> Once algorithm $i$ has been verified, you can verify other algorithms $j$ for which $\vec L_j \leq \vec H_i$.
+        \item<+-> More generally, the number of algorithms reachable in this way
+            can be counted \\ using BFS or DFS (floodfill).
+        \item<+-> Complexity: $\mathcal O(n^2)$
+    \end{itemize}
+    \solvestats
+\end{frame}

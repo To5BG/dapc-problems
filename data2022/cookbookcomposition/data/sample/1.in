@@ -1,0 +1,12 @@
+2
+ovendish 5
+tomatoes 2 0
+eggplants 2 0
+sauce 5 0
+arrange 1 3 tomatoes eggplants sauce
+bake 30 1 arrange
+icecream 4
+mix 5 0
+heat 5 1 mix
+churn 5 1 heat
+freeze 240 1 churn

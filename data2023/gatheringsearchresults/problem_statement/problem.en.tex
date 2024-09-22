@@ -1,0 +1,54 @@
+\problemname{Gathering Search Results}
+
+\illustration{0.25}{results.jpg}{
+    Throwback to when you still ranked search results manually.
+    CC BY-SA 2.0 by Matthew Bernhardt on \href{https://www.flickr.com/photos/64500102@N05/5899970872}{Flickr}
+}
+
+% optionally define variables/limits for this problem
+\newcommand{\maxn}{5000}
+\newcommand{\maxk}{100}
+
+You are making a new search engine for algorithms, called the Benelux Algorithm Preview Collector.
+All the marketing has been done, and you have plenty of investors, but there is one small problem:
+you have not written any code yet!
+As there are only five hours left until the product launch, you decide that there
+is not enough time to implement your own ranking algorithm.
+Instead, whenever a user searches for an algorithm, you just forward it to the $k$ most popular other search engines and use their results.
+
+Each of these $k$ search engines gives a list of $n$ results, ordered by estimated relevance.
+Surprisingly, it turns out that for every search term you try, the different search engines always give the same $n$ results, only the order differs between the search engines!
+You just need to find a way to combine the $k$ different rankings into a single ranking.
+
+To do this, you decide to give each possible combined ranking a cost:
+for each result $r$ and search engine $s$, if your combined ranking puts $r$ at the position $i$, and search engine $s$ puts $r$ at position $j$, then you incur a cost of $(i-j)^2$.
+The total cost of a combined ranking is the sum of all $k \cdot n$ costs computed this way.
+
+As an example, consider the second sample case.
+The first search engine returns the same result as the sample output, which has cost $0$.
+The second search engine swaps two adjacent results, which has cost $1+1=2$.
+For the third search engine, the first result is moved two positions back,
+and the other two are shifted one position to the front,
+which has cost $4+1+1=6$.
+The total cost is then $0+2+6=8$, which is the minimal possible cost over all
+possible orders.
+
+What is the order in which BAPC should output the results, such that the total cost is minimized?
+
+\begin{Input}
+	The input consists of:
+	\begin{itemize}
+		\item One line containing two integers $n$ and $k$ ($1\leq n\leq \maxn$, $1\leq k\leq \maxk$), the number of results, and the number of search engines.
+		\item $k$ lines, each containing $n$ integers,
+		    denoting the results as ordered by one of the search engines.
+		    It is guaranteed that each line contains every integer from $1$ to $n$ exactly once.
+	\end{itemize}
+\end{Input}
+
+\begin{Output}
+	Output the combined order of the results, such that the cost is minimized.
+
+	If there are multiple valid solutions, you may output any one of them.
+\end{Output}
+
+\pagebreak% Make sure that the last line ends up on the first page

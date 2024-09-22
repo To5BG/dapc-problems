@@ -1,0 +1,68 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+->[Problem:] Given are the scores $x_{t,s}$ of $2n$ students on
+          $r$ topics, where for each topic the scores are a permutation of $\{1, \dots, 2n\}$.
+
+          A pair (team) of students $s_1$, $s_2$ has team-score $S(s_1,s_2):=\sum_t \max(x_{t, s_1}, x_{t, s_2})$.
+
+          Is it possible to make pairs with total score $\frac 12 rn(3n+1)$.
+        \item<+->[Naive:] This is general max-weighted matching in a complete graph
+          on $2n$ vertices, where edge $s_is_j$ has weight $S(s_i, s_j)$.
+          (Complicated and too slow.)
+        \item<+->[Insight:] What is the maximum possible total score per topic? I.e.
+          for a permutation $a$ of $\{1, \dots, 2n\}$, what is the
+          maximum of
+          $$A = \max(a_1, a_2) + \max(a_3, a_4) + \dots + \max(a_{2n-1}, a_{2n})?$$
+        \item<+->[] Swap values such that $a_1 \leq a_2$, $a_3 \leq a_4$, \dots.
+          Then $A = a_2 + a_4 + \dots + a_{2n}$, which is maximal when
+          $$ A \leq (n+1) + (n+2) + \dots + (2n) = \frac{n \cdot ((n+1) + (2n))}2 =
+          \frac 12 n (3n+1).$$
+        \item<+->[] Thus, $\frac 12 r n (3n+1)$ is exactly the maximal possible score.
+    \end{description}
+\end{frame}
+
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+->[Insight:] The maximal pairing is only reached when for each
+          pair of students $(s_i, s_j)$ and each topic $t$, one of the scores $x_{t, s_i}$
+          and $x_{t, s_j}$ is \emph{low} ($\leq n$) and the other is \emph{high} ($> n$).
+        \item<+->[Solution:] First convert the input to binary matrix indicating whether
+          each score is low or high.
+          $$
+          \begin{matrix}
+            1 & 4 & 2 & 5 & 2 & 6\\
+            1 & 4 & 5 & 6 & 2 & 3\\
+            1 & 4 & 5 & 6 & 2 & 3\\
+        \end{matrix}
+          \quad \longrightarrow \quad
+          \begin{matrix}
+            0 & 1 & 0 & 1 & 0 & 1\\
+            0 & 1 & 1 & 1 & 0 & 0\\
+            0 & 1 & 1 & 1 & 0 & 0\\
+        \end{matrix}
+          $$
+          Now we must find a matching between \emph{complementary} columns.
+        \item<+->[] A matching exists iff each type of column has the same count as its complement.
+        \item<+->[Cute trick:] Sort the columns, take the complement, and check
+          if this equals the reverse.
+          $$
+          \begin{matrix}
+            0 & 0 & 0 & 1 & 1 & 1\\
+            0 & 0 & 1 & 0 & 1 & 1\\
+            0 & 0 & 1 & 0 & 1 & 1\\
+        \end{matrix}
+          \quad \longleftrightarrow \quad
+          \begin{matrix}
+            1 & 1 & 1 & 0 & 0 & 0\\
+            1 & 1 & 0 & 1 & 0 & 0\\
+            1 & 1 & 0 & 1 & 0 & 0\\
+        \end{matrix}
+          $$
+%%         \item<+->[Too slow:] After converting to binary the Blossom matching
+%%           algorithm could be used but $O(n^3)$ is too slow.
+      \item<+->[Run time:] $\mathcal O(nr \log(n))$.
+    \end{description}
+    \solvestats
+\end{frame}

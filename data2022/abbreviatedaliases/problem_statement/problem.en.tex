@@ -1,0 +1,41 @@
+\problemname{Abbreviated Aliases}
+
+\illustration{0.25}{alias.png}{CC BY-SA 3.0 by Wikimedia, modified}
+% Source: Modified screenshot of https://meta.wikimedia.org/w/index.php?title=Special:UserLogin
+
+% optionally define variables/limits for this problem
+\newcommand{\maxn}{10^4}
+\newcommand{\maxl}{10^3}
+
+You are the owner of a large successful internet site with lots of users.
+All these users have chosen an alias of exactly $l$ characters for logging into the site.
+Recently, you noticed that you started running into disk space issues:
+storing all these aliases takes up a lot of data!
+
+You do not have enough money to buy extra storage,
+so you are looking for ways to reduce the storage space needed.
+A friend gives you the following compression idea that might help:
+instead of storing the full alias for each user,
+you might get away with only storing a prefix of that alias,
+as long as no other alias has the same prefix.
+For example, if you just have the aliases \texttt{james} and \texttt{jacob},
+you can store only \texttt{jam} and \texttt{jac} and still be able to identify them both.
+
+This idea sounds quite interesting to you,
+and you are looking forward to finally having more space available on your disk again.
+You would like to find out how much space you need to store all aliases using this compression technique.
+
+\begin{Input}
+    The input consists of:
+    \begin{itemize}
+        \item One line with two integers $n$ and $l$ ($2 \le n \le \maxn$, $1 \le l \le \maxl$),
+        the number of aliases and the length of each alias.
+        \item $n$ lines, each with an alias:
+        a string consisting of exactly $l$ English lowercase characters (\texttt{a-z}).
+        Each alias is unique.
+    \end{itemize}
+\end{Input}
+
+\begin{Output}
+    Output the total number of characters you still need to store if you apply this compression technique.
+\end{Output}

@@ -1,0 +1,13 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{itemize}
+	    \item<+-> \textbf{Problem:} Given that $\texttt{foo}$ took $x \%$ of the total run time before optimizing and $y \%$ after, what is the factor of how much faster $\texttt{foo}$ got?
+	    \item<+-> \textbf{Observation:} We can express this problem as the following equations:
+		    
+		    $$\frac{\text{old time \texttt{foo}}}{\text{old time \texttt{foo}} + \text{other time}} = x \% \hspace{35pt} \frac{\text{new time \texttt{foo}}}{\text{new time \texttt{foo}} + \text{other time}} = y \% $$
+		    \textit{Goal:} Rewrite these equations to find $\frac{\text{old time \texttt{foo}}}{\text{new time \texttt{foo}}}$
+	    \item<+-> \textbf{Solution:}
+		    $$\text{factor} = \frac{\text{old time \texttt{foo}}}{\text{new time \texttt{foo}}} = \frac{x \cdot (1 - y)}{y \cdot (1 - x)}$$
+    \end{itemize}
+    \solvestats
+\end{frame}

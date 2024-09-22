@@ -1,0 +1,61 @@
+\problemname{Cheap Flying}
+
+\illustration{0.25}{benelux.pdf}{
+    The unpredictability of the jury members would be even worse, if they would all fly from their own universities,
+    instead of from the headquarters of BAPC. \\
+    CC BY-SA 4.0 by Shaund on \href{https://commons.wikimedia.org/wiki/File:Benelux-map.svg}{Wikimedia Commons}, modified
+}
+
+% optionally define variables/limits for this problem
+\newcommand{\maxa}{10^6}
+
+You are part of the organization of BAPC, and you are in charge of flight operations.
+From time to time, the jury members of BAPC
+need to fly from the remote headquarters of BAPC to the current location of the operation that BAPC performs,
+which is currently Amsterdam.
+Luckily there is an airline that serves the route from BAPC's headquarters to Amsterdam.
+The BAPC organization has a contract with that airline that ensures that you pay the same fixed amount for each flight.
+If your judges need to fly the route often, these costs can add up and become really high.
+To avoid this, you figured out that you could also simply buy your own aircraft.
+Once you own your own aircraft, you can either fly with this new shiny
+equipment which costs some fixed price per flight for fuel and the like, or
+alternatively you could still fly with the airline.
+
+The problem now is that you have no idea what the judges are doing!
+They are so incredibly unpredictable and always only do random and very
+complicated things.
+So random, that you cannot decide beforehand what you should do.
+So you need to make your decision on the fly, even though this may prevent you
+from making the cost-optimal decision up-front.
+Still, you do not want to be too loose with your spending:
+you set yourself the constraint that you spend at most twice as much as you
+would have if you exactly knew how many flights the judges would make in advance.
+
+\begin{Interaction}
+    This is an interactive problem.
+    Your submission will be run against an \emph{interactor},
+    which reads from the standard output of your submission
+    and writes to the standard input of your submission.
+    This interaction needs to follow a specific protocol:
+
+    The interactor first sends
+    one line with three integers $a$, $b$, and $c$ ($0\leq a,b,c\leq \maxa$),
+    the cost of one flight with the airline,
+    the one-time cost of buying an aircraft, and
+    the cost for each flight using your own aircraft.
+
+    Then, the interactor sends either the input ``\texttt{flight}'' or the input ``\texttt{end}''.
+    For every input ``\texttt{flight}'', you need to provide either
+    ``\texttt{airline}'' if you want fly with the airline for cost $a$,
+    ``\texttt{buy}'' to buy an aircraft and use it for a single flight for cost $b+c$, or
+    ``\texttt{self}'' if you want to use your own aircraft for cost $c$.
+    You can only use the last option if you have bought an aircraft before, and you can only buy an aircraft once.
+
+    The interaction ends when you receive the input ``\texttt{end}'', which is after at most $10^4$ rounds.
+
+    The interactor is adaptive, and may send fewer or more flights based on your output.
+
+    Make sure you flush the buffer after each write.
+
+    A testing tool is provided to help you develop your solution.
+\end{Interaction}

@@ -1,0 +1,19 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{itemize}
+        \item<+-> \textbf{Problem:} Given $n$ braille characters by their points, determine how many of them are distinct up to translation.
+        \item<+-> \textbf{To compare two characters:} For each character $P = \{p_1, \ldots, p_m\} \subset \mathbb{Z}^2$ sort its points lexicographically such that $p_1 < \ldots < p_m$. For two sorted characters $P,Q$ check if all points differ by the same translation: $p_1-q_1 = \ldots = p_m - q_m$.
+        \begin{itemize}
+            \item Complexity: $\mathcal O(m \log m)$.
+        \end{itemize}
+        \item<+-> \textbf{Naive solution:} For each character, compare it to every other character.
+        \begin{itemize}
+            \item Complexity: $\mathcal O(n^2)$ compares (too slow)
+        \end{itemize}
+        \item<+-> \textbf{Solution:} For each character, sort its points, and translate such that the first point is $(0,0)$. Then sort or use a hash set to count the number of unique characters.
+        \begin{itemize}
+            \item Complexity: $\mathcal O(n)$ or $\mathcal O(n \log n)$ compares
+        \end{itemize}
+    \end{itemize}
+    \solvestats
+\end{frame}

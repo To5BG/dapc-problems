@@ -1,0 +1,29 @@
+\begin{frame}
+	\frametitle{\problemtitle}
+    \begin{itemize}
+		\item<+-> \textbf{Problem:} Guess the hidden
+            $5$-digit prime in at most $6$ guesses, i.e., play \emph{Primel}.
+        \item<+-> First approach: repeatedly guess a random prime satisfying all
+            constraints so far.
+        \begin{itemize}
+          \item<+-> Wrong answer: Occasionally uses $7$ guesses!
+        \end{itemize}
+		\item<+-> \textbf{Observation:} Many guesses may be needed when only a
+            single digit is not known yet.
+        \item<+-> \textbf{Solution:} Ensure that the first two $5$-digit primes
+            contain all $10$ digits (e.g. $24683$ and $10597$) so that the set
+            of digits is known. Then make up to $4$ random consistent guesses.
+        \item<+-> This is guaranteed to succeed in $6$ guesses:
+            \begin{itemize}
+                \item When all digits are distinct, each digit can only be
+                    guessed in the wrong location $4$ times, once in the first
+                    $2$ guesses, and in $3$ of the $4$ remaining guesses.
+                \item When there are at most $4$ distinct digits, each position
+                    can only be guessed wrongly at most $3$ times.
+            \end{itemize}
+            In both cases, the final guess must be correct.
+        \item<+-> Note: The hidden test data simply consists of $13$
+            test cases covering all $5$-digit primes.
+    \end{itemize}
+    \solvestats
+\end{frame}

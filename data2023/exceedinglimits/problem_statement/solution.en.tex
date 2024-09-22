@@ -1,0 +1,15 @@
+\begin{frame}
+    \frametitle{\problemtitle}
+    \begin{description}
+        \item<+->[Problem:] Find the minimal amount of speeding to arrive on time.
+        \item<+->[First check:] Perform Dijkstra to check if the destination can be reached on time without speeding.
+        \item<+->[Observation:] Driving with different speeds may cause a different route to be faster.
+        \item<+->[Observation:] If you can reach the destination with some amount of speeding, \\
+            you can always reach the destination by speeding more.
+        \item<+->[Solution:] Binary search on the amount of speeding, performing Dijkstra with the new speeds. \\
+            If destination can be reached on time, try higher; else, try lower.
+        \item<+->[Run time:] $\mathcal O((m + n \log m) \cdot \log t)$.
+        \item<+->[Note:] Floating-point precision is not a problem, because of the low bounds on $t$ and $v$ ($10^5$).
+    \end{description}
+    \solvestats
+\end{frame}
