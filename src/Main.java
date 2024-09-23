@@ -36,6 +36,7 @@ public class Main {
                 return;
             }
             long startTime = System.nanoTime();
+            int total = 0, success = 0;
             for (File testFile : testFiles) {
                 String inputPath = testFile.getPath();
                 String testName = testFile.getName().replace(INPUT_EXT, "");
@@ -44,6 +45,7 @@ public class Main {
                 List<String> inputLines = Files.readAllLines(Paths.get(inputPath));
                 List<String> answerLines = Files.readAllLines(Paths.get(answerPath));
                 Future<Pair> future = executor.submit(() -> solver.solve(inputLines));
+                total++;
                 try {
                     long elapsedTime = (System.nanoTime() - startTime);
                     long remainingTime = Math.max(0, timeLimitSeconds - elapsedTime);
@@ -51,6 +53,7 @@ public class Main {
                     Pair solverResult = future.get(remainingTime, TimeUnit.NANOSECONDS);
                     if (passingSolution(answerLines, solverResult)) {
                         System.out.println("Test case " + testName + ": Passed");
+                        success++;
                     } else {
                         System.out.println("Test case " + testName + ": Failed");
                         System.out.println("Expected: " + answerLines);
@@ -63,6 +66,7 @@ public class Main {
                     System.out.println("Test case " + testName + ": Error - " + e.getMessage());
                 }
             }
+            System.out.printf("Total passed: %d / %d \n", success, total);
             System.out.println("Took " + (System.nanoTime() - startTime) / 1_000_000_000.0d + "s.");
             executor.shutdown();
         } catch (Exception e) {

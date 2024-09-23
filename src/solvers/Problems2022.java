@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.IntStream;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 class ProblemA2022Solver implements ProblemSolver {
     // Abbreviated Aliases - given aliases, calculate total length of shortest unique prefixes
     // Add all elements to a modified Trie -> each node contains all elements that contain same prefix so far
@@ -189,33 +189,42 @@ class ProblemE2022Solver implements ProblemSolver {
     // Extended braille -> Given n braille characters, determine how many are unique up to translation
     // For each character, sort points, and move lowest to (0,0) to standardize
     // Put all in a hashset and find final size
+    Long[][] zobrist;
+
+    public ProblemE2022Solver() {
+        zobrist = new Long[2001][2001];
+        Random rand = new Random();
+        for (int i = 0; i < 2001; i++) for (int j = 0; j < 2001; j++) zobrist[i][j] = rand.nextLong();
+    }
+
     public Pair solve(List<String> inputData) {
         int n = Integer.parseInt(inputData.get(0));
-        Braille[] chars = new Braille[n];
+        Long[] chars = new Long[n];
         int l = 1;
         for (int i = 0; i < n; i++) {
             int nc = Integer.parseInt(inputData.get(l++));
             Point[] pts = new Point[nc];
+            int minx = Integer.MAX_VALUE, miny = Integer.MAX_VALUE;
             for (int j = 0; j < nc; j++) {
                 String[] strs = inputData.get(l++).split(" ");
                 pts[j] = new Point(Integer.parseInt(strs[0]), Integer.parseInt(strs[1]));
+                minx = Math.min(minx, pts[j].x);
+                miny = Math.min(miny, pts[j].y);
+            }
+            for (Point p : pts) {
+                p.x -= minx;
+                p.y -= miny;
             }
             Arrays.sort(pts, ((a, b) -> {
                 if (a.x != b.x) return a.x - b.x;
                 return a.y - b.y;
             }));
-            Point first = pts[0];
-            for (Point p : pts) {
-                p.x = p.x - first.x;
-                p.y = p.y - first.y;
-            }
-            chars[i] = new Braille(pts);
+            Long zob = 0L;
+            for (Point p : pts) zob ^= zobrist[p.x][p.y];
+            chars[i] = zob;
         }
-        Set<Braille> charSet = new HashSet<>(Arrays.asList(chars));
+        Set<Long> charSet = new HashSet<>(Arrays.asList(chars));
         return new Pair((double) charSet.size(), null);
-    }
-
-    record Braille(Point[] pts) {
     }
 
     static class Point {
@@ -245,22 +254,24 @@ class ProblemF2022Solver implements ProblemSolver {
 @SuppressWarnings("unused")
 class ProblemH2022Solver implements ProblemSolver {
     // Heavy Hauling - given n 1D boxes, and moving a box costs d^2 for dist d, find min to make all positions distinct
-    // First take care of individual stacks (boxes of same x-coordinate) -> they map to an interval
     // The cost of moving a single box is quadratic to its original dist -> C(x) = (x_box - x)^2
     // Aka model each box as a quadratic, ax^2 + bx + c. A single box's solution is its original position x_box.
     // -b / 2a = x_box AND a{x_box}^2 + b{x_box} + c = 0  <=>  a = 1, b = -2 * {x_box}, c = {x_box}^2
     // To combine two boxes, translate one of them, e.g. -> C(x) = ({x_box_1} - x)^2 + ({x_box_2 - x} + 1)^2
-    // Two boxes need to be combined iff their ranges overlap. The size of a group is equal to a (combining quadratics)
-    // Thus, two groups/ranges overlap iff {x_solution_1} + a >= {x_solution_2}. Closed form to combine groups:
+    // If they form a stack, they map to an interval. Two boxes need to be combined iff their ranges overlap.
+    // The size of a group is equal to a (combining quadratics) => Two groups overlap iff {x_sol_1} + a >= {x_sol_2}.
+    // Closed form to combine groups:
     // ax^2 + bx + c + {a2}{x2}^2 + {b2}{x2} + {c2} = ax^2 + bx + c + {a2}(x + a)^2 + {b2}(x + a) + {c2} =
     // (a + {a2})x^2 + (b + 2a{a2} + {b2})x + (c + a^2{a2} + a{b2} + {c2})
+    // To summarize -> each box forms a group, go from left-to-right, if two groups overlap, merge them
+    // Once no groups overlap, calculate the cost of each to be mapped to an interval (solve quadratic), and sum
     public Pair solve(List<String> inputData) {
         int n = Integer.parseInt(inputData.get(0));
         Long[] boxes = Arrays.stream(inputData.get(1).split(" ")).map(Long::parseLong).toArray(Long[]::new);
         Deque<Group> stack = new ArrayDeque<>();
         for (Long box : boxes) {
             Group next = new Group(1, -2 * box, box * box);
-            while (!stack.isEmpty() && stack.peek().intersects(next)) next = next.merge(stack.pop());
+            while (!stack.isEmpty() && stack.peek().intersects(next)) next = stack.pop().merge(next);
             stack.push(next);
         }
         return new Pair((double) stack.stream().map(Group::cost).reduce(Long::sum).orElse(0L), null);
@@ -285,7 +296,7 @@ class ProblemH2022Solver implements ProblemSolver {
         }
 
         public Group merge(Group o) {
-            return new Group(a + o.a, b + 2 * a * o.a + o.b, c + a * a * o.a + o.b * a + o.c);
+            return new Group(a + o.a, b + 2 * a * o.a + o.b, c + a * a * o.a + a * o.b + o.c);
         }
 
         public boolean intersects(Group o) {
