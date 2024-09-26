@@ -5,7 +5,7 @@ import java.util.concurrent.*;
 
 public class Main {
 
-    private static final String YEAR = "2022";
+    private static final String YEAR = "2023";
     private static final String DATA_PATH = "./data" + YEAR + '/';
     private static final String INPUT_SUFFIX = "/data/secret/";
     private static final String INPUT_EXT = ".in";
@@ -91,7 +91,8 @@ public class Main {
         if (answerLines.size() > 1) return answerLines.equals(solverResult.resStr());
         try {
             double d = Double.parseDouble(answerLines.get(0));
-            return Math.abs(d - solverResult.res()) <= 10e-6;
+            if (solverResult.res() < 1) return Math.abs(d - solverResult.res()) <= 1e-6;
+            return Math.abs(d - solverResult.res()) / solverResult.res() <= 1e-6;
         } catch (Exception e) {
             return answerLines.equals(solverResult.resStr());
         }
