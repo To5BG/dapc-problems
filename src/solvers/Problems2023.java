@@ -3,7 +3,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 class ProblemA2023Solver implements ProblemSolver {
     public Pair solve(List<String> inputData) {
         Scanner sc = new Scanner(inputData.get(0));
@@ -84,69 +84,54 @@ class ProblemD2023Solver implements ProblemSolver {
 
 @SuppressWarnings("unused")
 class ProblemE2023Solver implements ProblemSolver {
-    int n;
-    Map<Integer, Map<Integer, Route>> graph;
-
     public Pair solve(List<String> inputData) {
-        Scanner sc = new Scanner(inputData.get(0));
-        n = sc.nextInt();
-        if (n == 5) {
-            System.out.flush();
-        }
-        int m = sc.nextInt(), t = sc.nextInt();
-        graph = new HashMap<>();
-        double maxSpeed = 0;
-        for (int i = 1; i <= n; i++) graph.put(i, new HashMap<>());
+        Scanner scanner = new Scanner(inputData.get(0));
+        int n = scanner.nextInt(), m = scanner.nextInt(), t = scanner.nextInt();
+        List<List<Route>> graph = new ArrayList<>();
+        for (int i = 0; i <= n; i++) graph.add(new ArrayList<>());
         for (int i = 0; i < m; i++) {
             Integer[] nums = Arrays.stream(inputData.get(i + 1).split(" "))
                     .map(Integer::parseInt).toArray(Integer[]::new);
-            Route r = new Route(nums[0], nums[1], nums[2], nums[3]);
-            maxSpeed = Math.max(maxSpeed, nums[2]);
-            graph.get(nums[0]).put(nums[1], r);
-            graph.get(nums[1]).put(nums[0], r);
+            int a = nums[0], b = nums[1], l = nums[2], v = nums[3];
+            graph.get(a).add(new Route(b, l, v));
+            graph.get(b).add(new Route(a, l, v));
         }
-        if (dijkstra(0.0) <= t) return new Pair(0.0, null);
-        double low = 0, high = maxSpeed;
+        double dist = dijkstra(graph, n, 0);
+        if (dist <= t) return new Pair(0.0, null);
+        double low = 0, high = 1e9, mid;
         do {
-            double newRate = (high - low) / 2;
-            if (dijkstra(newRate) <= t) high = newRate;
-            else low = newRate;
-        } while (high - low > 10e-6);
-        return new Pair(low, null);
+            mid = (low + high) / 2;
+            if (dijkstra(graph, n, mid) <= t) high = mid;
+            else low = mid;
+        } while ((high - low) >= 1e-6);
+        return new Pair(mid, null);
     }
 
-    public double dijkstra(double rate) {
-        Queue<Node> q = new PriorityQueue<>(Comparator.comparing(r -> r.cost));
-        Map<Integer, Double> dist = new HashMap<>();
-        dist.put(1, 0.0);
+    private double dijkstra(List<List<Route>> graph, int n, double rate) {
+        double[] dist = new double[n + 1];
+        Arrays.fill(dist, Double.MAX_VALUE);
+        dist[1] = 0.0;
+        Queue<Node> q = new PriorityQueue<>(Comparator.comparing(i -> i.cost));
         q.add(new Node(1, 0));
         while (!q.isEmpty()) {
             Node curr = q.poll();
+            if (curr.cost != dist[curr.idx]) continue;
             if (curr.idx == n) break;
-            for (Map.Entry<Integer, Route> e : graph.get(curr.idx).entrySet()) {
-                int next = e.getKey();
-                Route r = e.getValue();
-                double newCost = curr.cost + r.l / (r.v + rate);
-                if (newCost < dist.getOrDefault(next, Double.MAX_VALUE)) {
-                    dist.put(next, newCost);
-                    q.add(new Node(next, newCost));
+            for (Route e : graph.get(curr.idx)) {
+                double newDist = curr.cost + e.l / (e.v + rate);
+                if (newDist < dist[e.to]) {
+                    dist[e.to] = newDist;
+                    q.add(new Node(e.to, newDist));
                 }
             }
         }
-        return dist.getOrDefault(n, 0.0);
+        return dist[n];
     }
 
-    record Route(int a, int b, double l, double v) {
+    record Route(int to, double l, double v) {
     }
 
-    static class Node {
-        int idx;
-        double cost;
-
-        public Node(int idx, double cost) {
-            this.idx = idx;
-            this.cost = cost;
-        }
+    record Node(int idx, double cost) {
     }
 }
 
@@ -170,6 +155,7 @@ class ProblemH2023Solver implements ProblemSolver {
     public Pair solve(List<String> inputData) {
         int n = Integer.parseInt(inputData.get(0));
         Map<Character, List<Character>> ch = new HashMap<>();
+        for (int i = 0; i < 26; i++) ch.put((char) (i + 97), new ArrayList<>());
         for (int i = 1; i <= n - 1; i++) {
             String f = inputData.get(i);
             String s = inputData.get(i + 1);
@@ -178,8 +164,6 @@ class ProblemH2023Solver implements ProblemSolver {
                 char fc = f.charAt(j), sc = s.charAt(j);
                 if (fc != sc) {
                     match = false;
-                    if (!ch.containsKey(fc)) ch.put(fc, new ArrayList<>());
-                    if (!ch.containsKey(sc)) ch.put(sc, new ArrayList<>());
                     ch.get(fc).add(sc);
                     break;
                 }
@@ -192,7 +176,7 @@ class ProblemH2023Solver implements ProblemSolver {
     public Pair topoOrder(Map<Character, List<Character>> ch) {
         int[] deg = new int[26];
         for (Map.Entry<Character, List<Character>> e : ch.entrySet()) for (Character c : e.getValue()) deg[c - 97]++;
-        Queue<Character> q = new ArrayDeque<>();
+        Queue<Character> q = new PriorityQueue<>();
         for (int i = 0; i < 26; i++) if (deg[i] == 0) q.add((char) (i + 97));
         List<Character> ord = new ArrayList<>();
         while (!q.isEmpty()) {
@@ -210,11 +194,15 @@ class ProblemI2023Solver implements ProblemSolver {
     public Pair solve(List<String> inputData) {
         Scanner sc = new Scanner(inputData.get(0));
         int n = sc.nextInt(), m = sc.nextInt(), res = 0, curr = 0;
-        Integer[] jobs = Arrays.stream(inputData.get(1).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
-        for (int i = 0; i < Math.max(0, n - m) + 1; i++) {
-            if (jobs[i] <= 0) continue;
-            for (int j = i + 1; j < Math.min(n, i + m); j++) jobs[j] -= jobs[i];
-            for (int j = i; j < Math.min(n, i + m); j++) res = Math.max(res, jobs[j]);
+        int[] jobs = Arrays.stream(inputData.get(1).split(" ")).mapToInt(Integer::parseInt).toArray();
+        Queue<Integer> machines = new PriorityQueue<>();
+        for (int i = 0; i < m; i++) machines.add(0);
+        int idx = 0;
+        while (!machines.isEmpty()) {
+            Integer t = machines.remove();
+            res = Math.max(res, t - curr);
+            curr = t;
+            if (idx != jobs.length) machines.add(curr + jobs[idx++]);
         }
         return new Pair((double) res, null);
     }
@@ -227,7 +215,7 @@ class ProblemJ2023Solver implements ProblemSolver {
         int[] first = inputData.get(1).chars().map(c -> c - 65).toArray();
         int[] second = inputData.get(2).chars().map(c -> c - 65).toArray();
         return new Pair((double) IntStream.range(0, n).map(i ->
-                (Math.min(first[i], second[i]) + 26 - Math.max(first[i], second[i])) % 26).sum(), null);
+                Math.min((first[i] - second[i] + 26) % 26, (second[i] - first[i] + 26) % 26)).sum(), null);
     }
 }
 
