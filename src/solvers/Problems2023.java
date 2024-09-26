@@ -63,13 +63,13 @@ class ProblemA2023Solver implements ProblemSolver {
 class ProblemB2023Solver implements ProblemSolver {
     public Pair solve(List<String> inputData) {
         int n = Integer.parseInt(inputData.get(0));
-        Integer[] first = Arrays.stream(inputData.get(1).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
-        Integer[] second = Arrays.stream(inputData.get(2).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+        Integer[] f = Arrays.stream(inputData.get(1).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+        Integer[] s = Arrays.stream(inputData.get(2).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
         double c = 0, c2 = 0;
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
-                if (first[i] > second[j]) c++;
-                else if (first[i] < second[j]) c2++;
+                if (f[i] > s[j]) c++;
+                else if (f[i] < s[j]) c2++;
             }
         return new Pair(null, List.of((c > c2) ? "first" : (c < c2) ? "second" : "tie"));
     }
@@ -175,7 +175,8 @@ class ProblemH2023Solver implements ProblemSolver {
 
     public Pair topoOrder(Map<Character, List<Character>> ch) {
         int[] deg = new int[26];
-        for (Map.Entry<Character, List<Character>> e : ch.entrySet()) for (Character c : e.getValue()) deg[c - 97]++;
+        for (Map.Entry<Character, List<Character>> e : ch.entrySet())
+            for (Character c : e.getValue()) deg[c - 97]++;
         Queue<Character> q = new PriorityQueue<>();
         for (int i = 0; i < 26; i++) if (deg[i] == 0) q.add((char) (i + 97));
         List<Character> ord = new ArrayList<>();
@@ -186,6 +187,33 @@ class ProblemH2023Solver implements ProblemSolver {
         }
         if (ord.size() != 26) return new Pair(null, List.of("impossible"));
         return new Pair(null, List.of(ord.stream().map(String::valueOf).collect(Collectors.joining())));
+    }
+}
+
+@SuppressWarnings("unused")
+class ProblemH2023Validator implements ProblemValidator {
+    public boolean passes(List<String> input, List<String> answer, Pair inputData) {
+        if (inputData.resStr() == null || inputData.resStr().size() != 1) return false;
+        String fin = inputData.resStr().get(0);
+        if (answer.get(0).equals("impossible")) return fin.equals("impossible");
+        char[] sInput = fin.toCharArray();
+        Arrays.sort(sInput);
+        Map<Character, Integer> inv = new HashMap<>();
+        for (int i = 0; i < 26; i++) {
+            if (sInput[i] != (char) (i + 97)) return false;
+            inv.put(fin.charAt(i), i);
+        }
+        for (int i = 1; i < input.size() - 1; i++) {
+            String f = input.get(i), s = input.get(i + 1);
+            for (int j = 0; ; j++) {
+                if (j >= f.length()) break;
+                if (j >= s.length()) return false;
+                int comp = inv.get(f.charAt(j)) - inv.get(s.charAt(j));
+                if (comp > 0) return false;
+                if (comp < 0) break;
+            }
+        }
+        return true;
     }
 }
 

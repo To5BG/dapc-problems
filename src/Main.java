@@ -26,7 +26,7 @@ public class Main {
             }
             ProblemSolver solver = getSolverForProblem(problemDirectory);
             String tlPath = DATA_PATH + problemDirectory + "/" + TIME_LIMIT_FILE;
-            long timeLimitSeconds = Long.parseLong(Files.readAllLines(Paths.get(tlPath)).get(0).trim()) * 1_000_000_000;
+            long timeLimitSeconds = Long.parseLong(Files.readAllLines(Paths.get(tlPath)).get(0).trim()) * (long) 1e9;
 
             ExecutorService executor = Executors.newSingleThreadExecutor();
             File testDir = new File(DATA_PATH + problemDirectory + INPUT_SUFFIX);
@@ -51,7 +51,7 @@ public class Main {
                     long remainingTime = Math.max(0, timeLimitSeconds - elapsedTime);
 
                     Pair solverResult = future.get(remainingTime, TimeUnit.NANOSECONDS);
-                    if (passingSolution(answerLines, solverResult)) {
+                    if (checkSolution(problemDirectory, inputLines, answerLines, solverResult)) {
                         System.out.println("Test case " + testName + ": Passed");
                         success++;
                     } else {
@@ -67,7 +67,7 @@ public class Main {
                 }
             }
             System.out.printf("Total passed: %d / %d \n", success, total);
-            System.out.println("Took " + (System.nanoTime() - startTime) / 1_000_000_000.0d + "s.");
+            System.out.println("Took " + (System.nanoTime() - startTime) / 1e9 + "s.");
             executor.shutdown();
         } catch (Exception e) {
             System.out.println("An error occurred: " + e.getMessage());
@@ -83,18 +83,25 @@ public class Main {
 
     private static ProblemSolver getSolverForProblem(String problemDirectory) throws Exception {
         char upperCaseProblemLetter = (char) (problemDirectory.charAt(0) - 32);
-        return (ProblemSolver) Class.forName("Problem" + upperCaseProblemLetter + YEAR + "Solver")
-                .getDeclaredConstructor().newInstance();
+        String n = "Problem" + upperCaseProblemLetter + YEAR + "Solver";
+        return (ProblemSolver) Class.forName(n).getDeclaredConstructor().newInstance();
     }
 
-    private static boolean passingSolution(List<String> answerLines, Pair solverResult) {
-        if (answerLines.size() > 1) return answerLines.equals(solverResult.resStr());
+    private static boolean checkSolution(String probDir, List<String> in, List<String> ans, Pair solverResult) {
         try {
-            double d = Double.parseDouble(answerLines.get(0));
-            if (solverResult.res() < 1) return Math.abs(d - solverResult.res()) <= 1e-6;
-            return Math.abs(d - solverResult.res()) / solverResult.res() <= 1e-6;
+            char upperCaseProblemLetter = (char) (probDir.charAt(0) - 32);
+            String n = "Problem" + upperCaseProblemLetter + YEAR + "Validator";
+            ProblemValidator v = (ProblemValidator) Class.forName(n).getDeclaredConstructor().newInstance();
+            return v.passes(in, ans, solverResult);
         } catch (Exception e) {
-            return answerLines.equals(solverResult.resStr());
+            if (ans.size() > 1) return ans.equals(solverResult.resStr());
+            try {
+                double d = Double.parseDouble(ans.get(0));
+                if (solverResult.res() < 1) return Math.abs(d - solverResult.res()) <= 1e-6;
+                return Math.abs(d - solverResult.res()) / solverResult.res() <= 1e-6;
+            } catch (Exception ee) {
+                return ans.equals(solverResult.resStr());
+            }
         }
     }
 }
