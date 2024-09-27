@@ -63,8 +63,8 @@ class ProblemA2023Solver implements ProblemSolver {
 class ProblemB2023Solver implements ProblemSolver {
     public Pair solve(List<String> inputData) {
         int n = Integer.parseInt(inputData.get(0));
-        Integer[] f = Arrays.stream(inputData.get(1).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
-        Integer[] s = Arrays.stream(inputData.get(2).split(" ")).map(Integer::parseInt).toArray(Integer[]::new);
+        int[] f = Arrays.stream(inputData.get(1).split(" ")).mapToInt(Integer::parseInt).toArray();
+        int[] s = Arrays.stream(inputData.get(2).split(" ")).mapToInt(Integer::parseInt).toArray();
         double c = 0, c2 = 0;
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
@@ -90,8 +90,7 @@ class ProblemE2023Solver implements ProblemSolver {
         List<List<Route>> graph = new ArrayList<>();
         for (int i = 0; i <= n; i++) graph.add(new ArrayList<>());
         for (int i = 0; i < m; i++) {
-            Integer[] nums = Arrays.stream(inputData.get(i + 1).split(" "))
-                    .map(Integer::parseInt).toArray(Integer[]::new);
+            int[] nums = Arrays.stream(inputData.get(i + 1).split(" ")).mapToInt(Integer::parseInt).toArray();
             int a = nums[0], b = nums[1], l = nums[2], v = nums[3];
             graph.get(a).add(new Route(b, l, v));
             graph.get(b).add(new Route(a, l, v));
@@ -107,7 +106,7 @@ class ProblemE2023Solver implements ProblemSolver {
         return new Pair(mid, null);
     }
 
-    private double dijkstra(List<List<Route>> graph, int n, double rate) {
+    public double dijkstra(List<List<Route>> graph, int n, double rate) {
         double[] dist = new double[n + 1];
         Arrays.fill(dist, Double.MAX_VALUE);
         dist[1] = 0.0;
@@ -146,7 +145,31 @@ class ProblemF2023Solver implements ProblemSolver {
 @SuppressWarnings("unused")
 class ProblemG2023Solver implements ProblemSolver {
     public Pair solve(List<String> inputData) {
-        return null;
+        Scanner sc = new Scanner(inputData.get(0));
+        int n = sc.nextInt(), m = sc.nextInt();
+        Tuple[] ts = new Tuple[n];
+        for (int i = 0; i < n; i++) ts[i] = new Tuple(i + 1);
+        for (int i = 0; i < m; i++) {
+            int[] nums = Arrays.stream(inputData.get(i + 1).split(" ")).mapToInt(Integer::parseInt).toArray();
+            for (int j = 0; j < n; j++) {
+                Tuple curr = ts[nums[j] - 1];
+                curr.s += j;
+                curr.n++;
+            }
+        }
+        List<Integer> res = Arrays.stream(ts).sorted(Comparator.comparing(t -> t.s / t.n)).map(t -> t.idx).toList();
+        String resStr = res.stream().map(String::valueOf).collect(Collectors.joining(" "));
+        return new Pair(null, List.of(resStr));
+    }
+
+    static class Tuple {
+        int idx;
+        double s, n;
+
+        public Tuple(int idx) {
+            this.idx = idx;
+            this.s = this.n = 0;
+        }
     }
 }
 

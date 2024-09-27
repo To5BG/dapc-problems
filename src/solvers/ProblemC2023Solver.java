@@ -1,9 +1,10 @@
 import java.util.Scanner;
 
+@SuppressWarnings("all")
 public class ProblemC2023Solver {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int a = sc.nextInt(), b = sc.nextInt(), c = sc.nextInt();
+        long a = sc.nextLong(), b = sc.nextLong(), c = sc.nextLong();
         int f = 0, state = 0;
         while (++f > 0) {
             if (sc.next().equals("end")) break;
@@ -14,6 +15,7 @@ public class ProblemC2023Solver {
                 System.out.println("buy");
                 state = 2;
             } else System.out.println("self");
+            System.out.flush();
         }
     }
 }
